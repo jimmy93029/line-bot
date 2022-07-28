@@ -22,6 +22,7 @@ line_bot_api = LineBotApi('hnhGjc7uyGly+b9JxA+bAAWg/J+ZsnZD8I/64IN5Xm8MZWmjUyw72
 handler = WebhookHandler('b3d4e6f23d6b1d2e7acceec870dda68a')
 
 
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -43,6 +44,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = event.message.text 
+    translator = Translator()
     if '皮丘' in message[0:2]:
         languague = message.split(' ')[0][2:]
         sentence = message.split(' ')[1]
@@ -51,8 +53,12 @@ def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text= reply ))
+    if message == '/languague list':
+        pprint(googletrans.LANGCODES)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run('0.0.0.0',debug = True)
     handle_message(event)
+
+
